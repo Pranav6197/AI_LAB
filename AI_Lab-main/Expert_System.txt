@@ -1,0 +1,52 @@
+% FACTS - Symptoms for each disease
+symptom(cold, runny_nose).
+symptom(cold, sneezing).
+symptom(cold, sore_throat).
+symptom(cold, cough).
+symptom(flu, fever).
+symptom(flu, headache).
+symptom(flu, body_ache).
+symptom(flu, fatigue).
+symptom(allergies, sneezing).
+symptom(allergies, itchy_eyes).
+symptom(allergies, runny_nose).
+symptom(food_poisoning, nausea).
+symptom(food_poisoning, vomiting).
+symptom(food_poisoning, stomach_pain).
+
+% FACTS - Treatment advice
+treatment(cold, "Rest, drink fluids, take over-the-counter cold medicine").
+treatment(flu, "Rest, drink fluids, take fever reducers, see doctor if severe").
+treatment(allergies, "Take antihistamines, avoid allergens").
+treatment(food_poisoning, "Stay hydrated, eat mild foods when able").
+
+% RULES - User symptom confirmation
+has_symptom(Symptom) :-
+    write('Do you have '), 
+    write(Symptom), 
+    write('? (y/n) '),
+    read(Response),
+    (Response = y -> true; Response = n -> false; has_symptom(Symptom)).
+
+% RULES - Check if the disease has matching symptoms
+check_disease(Disease) :-
+    findall(Symptom, (symptom(Disease, Symptom), has_symptom(Symptom)), Matching),
+    Matching \= [],  % At least one symptom must match
+    write('You may have: '), write(Disease), nl,
+    treatment(Disease, Advice),
+    write('Advice: '), write(Advice), nl.
+
+% RULES - Show diagnosis and advice
+diagnose :-
+    write('Medical Diagnosis System'), nl,
+    write('Please answer the following questions:'), nl,
+    findall(Disease, check_disease(Disease), Diseases),
+    (Diseases = [] -> 
+        write('No matching disease found based on your symptoms.'), nl
+    ;
+        write('Possible diseases based on your symptoms: '), 
+        write(Diseases), nl
+    ).
+
+% Start the diagnosis system
+start :- diagnose.
