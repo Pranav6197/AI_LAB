@@ -1,0 +1,58 @@
+% Interests and skills of people (facts)
+person(prajaka).
+person(sanika). 
+person(shantanu).
+
+
+
+% Interests
+interest(prajaka, science).
+interest(prajaka, math). 
+interest(prajaka, coding).
+
+interest(sanika, art).
+interest(sanika, imagination).
+interest(sanika, creativity).
+
+interest(shantanu, biology).
+interest(shantanu, helping_others). 
+interest(shantanu, patience).
+
+
+
+% Skills
+skill(prajaka, coding).
+skill(prajaka, problem_solving). 
+skill(prajaka, statistics).
+
+skill(sanika, drawing).
+skill(sanika, creativity).
+skill(sanika, communication).
+
+
+skill(shantanu, patience).
+skill(shantanu, memory).
+skill(shantanu, communication).
+
+
+% Career rules
+career(Person, engineer) :- interest(Person, science), interest(Person, math), skill(Person, coding).
+
+career(Person, artist) :- interest(Person, art), interest(Person, imagination), skill(Person, drawing).
+
+career(Person, doctor) :- interest(Person, biology), interest(Person, helping_others), skill(Person, patience).
+
+career(Person, teacher) :- interest(Person, teaching),
+skill(Person, communication).
+
+career(Person, writer) :- interest(Person, writing), skill(Person, grammar).
+ 
+% Main function
+:- initialization(main).
+
+main :-
+person(Person),
+career(Person, Career),
+format("~w could be a good ~w.~n", [Person, Career]), fail.
+
+main :- halt.
